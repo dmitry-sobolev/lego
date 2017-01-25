@@ -12,3 +12,5 @@ COPY ./entrypoint.sh /opt
 VOLUME ["/opt/.lego"]
 
 ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
+
+CMD ["run"]
