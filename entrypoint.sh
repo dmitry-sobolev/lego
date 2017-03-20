@@ -37,8 +37,8 @@ fi
 if test "$cmd" = "renew"; then
     while test 1; do
         sh -c "$app renew --days 60" && \
-        echo "[$(date)] Sleeping. Next renewal scheduled in 45 days" && \
-        sleep 45d
+        echo "[$(date)] Sleeping. Next renewal scheduled in 30 days" && \
+        sleep 30d
     done
 fi
 
