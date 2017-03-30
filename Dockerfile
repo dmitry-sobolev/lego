@@ -3,7 +3,8 @@ FROM xenolf/lego
 ENV DO_AUTH_TOKEN='' \
     ACME_EMAIL='' \
     ACME_DOMAINS='' \
-    ACME_DNS_TYPE='digitalocean'
+    ACME_DNS_TYPE='digitalocean' \
+    RENEW_DAYS=30
 
 WORKDIR /opt
 

@@ -7,6 +7,26 @@ if test -z "$ACME_DNS_TYPE" -o -z "$ACME_EMAIL" -o -z "$ACME_DOMAINS"; then
     exit 1
 fi
 
+set +e
+expr $RENEW_DAYS + 1 2>/dev/null >/dev/null
+INT_TEST_RES=$?
+set -e
+
+if test -z "$RENEW_DAYS"; then
+    echo "RENEW_DAYS env variable must be set"
+    exit 1
+fi
+
+if test $INT_TEST_RES -ne 0; then
+    echo "RENEW_DAYS env variable must be positive number"
+    exit 1
+fi
+
+if test $RENEW_DAYS -le 0; then
+    echo "Renewal period must be set through RENEW_DAYS env variable and must be positive int"
+    exit 1
+fi
+
 cmd=$1
 
 if test -z "$cmd"; then
@@ -23,7 +43,7 @@ for domain in $domains; do
     fi
 done
 
-if test ! -n $domain_args; then
+if test ! -n "$domain_args"; then
     echo "Empty domain list"
     exit 1
 fi
@@ -36,9 +56,9 @@ fi
 
 if test "$cmd" = "renew"; then
     while test 1; do
-        sh -c "$app renew --days 60" && \
-        echo "[$(date)] Sleeping. Next renewal scheduled in 30 days" && \
-        sleep 30d
+        sh -c "$app renew --days $RENEW_DAYS"
+        echo "[$(date)] Sleeping. Next renewal scheduled in $RENEW_DAYS days"
+        sleep "${RENEW_DAYS}d"
     done
 fi
 
